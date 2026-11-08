@@ -1,19 +1,11 @@
-#from model import Transaction
-
-#t = Transaction("expense", "food", 1500, "lunch")
-
-#t = Transaction("expense", "food", 1500)
-#print(t)
-#from model import Transaction
-
-#t = Transaction("expense", "food", 1500, "lunch")
-#t2 = Transaction("income", "allowance", 50000)
-#print(t)
-#print(t2)
-#print(t.amount)
 from model import Transaction
+from validation import get_amount, get_category
 
 transactions = []
+
+
+def format_money(cents):
+    return f"{cents // 100:,}.{cents % 100:02d}"
 
 
 def show_menu():
@@ -25,17 +17,38 @@ def show_menu():
     print("5. Quit")
 
 
+def add_transaction(kind):
+    print(f"\n--- Add {kind} ---")
+    category = get_category("Category (e.g. food, rent, salary): ")
+    amount = get_amount("Amount: ")
+    note = input("Note (optional): ").strip()
+
+    transactions.append(Transaction(kind, category, amount, note))
+    print(f"Saved: {kind} of {format_money(amount)} in '{category}'.")
+
+
+def view_transactions():
+    print("\n--- All transactions ---")
+    if not transactions:
+        print("No transactions yet.")
+        return
+
+    for number, t in enumerate(transactions, start=1):
+        sign = "+" if t.type == "income" else "-"
+        print(f"{number}. {sign}{format_money(t.amount)}  {t.category}  {t.note}")
+
+
 def main():
     while True:
         show_menu()
         choice = input("Choose an option (1-5): ").strip()
 
         if choice == "1":
-            print("Add income: coming soon")
+            add_transaction("income")
         elif choice == "2":
-            print("Add expense: coming soon")
+            add_transaction("expense")
         elif choice == "3":
-            print("View transactions: coming soon")
+            view_transactions()
         elif choice == "4":
             print("View summary: coming soon")
         elif choice == "5":
