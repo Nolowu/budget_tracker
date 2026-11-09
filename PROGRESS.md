@@ -9,4 +9,5 @@
 | 5. Add transaction | ✅ Done | Learned: f-strings, lists, functions, enumerate |
 | 6. Summaries | ✅ Done | Learned: dictionaries, .get(), sum() |
 | 7. Persistence | ✅ Done | Learned: JSON, file reading/writing, .gitignore |
-| 8. Polish and test | 🔄 In progress | Done: category length limit (len, elif) |
+| 8. Polish and test | ✅ Done | Learned: edge cases, len(), README, Ctrl+C handling |
+| 9. Team workflow | 🔄 In progress | |
