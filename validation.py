@@ -10,10 +10,12 @@ def get_category(prompt):
             print("Category cannot be empty. Please try again.")
         elif not any(ch.isalpha() for ch in value):
             print("Category must contain at least one letter, e.g. food or rent.")
+        elif len(value) > 30:
+            print("Category is too long. Please use 30 characters or fewer.")
         else:
             return value
 
-
+        
 def get_amount(prompt):
     while True:
         raw = input(prompt).strip()
