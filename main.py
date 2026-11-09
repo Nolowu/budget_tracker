@@ -1,11 +1,14 @@
 from model import Transaction
 from validation import get_amount, get_category
+from summary import totals_by_category, total, balance
 
 transactions = []
 
 
 def format_money(cents):
-    return f"{cents // 100:,}.{cents % 100:02d}"
+    sign = "-" if cents < 0 else ""
+    cents = abs(cents)
+    return f"{sign}{cents // 100:,}.{cents % 100:02d}"
 
 
 def show_menu():
@@ -38,6 +41,24 @@ def view_transactions():
         print(f"{number}. {sign}{format_money(t.amount)}  {t.category}  {t.note}")
 
 
+def print_totals(title, totals):
+    print(f"\n{title}")
+    if not totals:
+        print("  (none)")
+        return
+    for category, cents in sorted(totals.items()):
+        print(f"  {category}: {format_money(cents)}")
+
+
+def view_summary():
+    print("\n--- Summary ---")
+    print_totals("Income by category:", totals_by_category(transactions, "income"))
+    print_totals("Expenses by category:", totals_by_category(transactions, "expense"))
+    print(f"\nTotal income:   {format_money(total(transactions, 'income'))}")
+    print(f"Total expenses: {format_money(total(transactions, 'expense'))}")
+    print(f"Balance:        {format_money(balance(transactions))}")
+
+
 def main():
     while True:
         show_menu()
@@ -50,7 +71,7 @@ def main():
         elif choice == "3":
             view_transactions()
         elif choice == "4":
-            print("View summary: coming soon")
+            view_summary()
         elif choice == "5":
             print("Goodbye!")
             break
