@@ -6,9 +6,12 @@ MAX_AMOUNT = Decimal("1000000000")
 def get_category(prompt):
     while True:
         value = input(prompt).strip().lower()
-        if value:
+        if not value:
+            print("Category cannot be empty. Please try again.")
+        elif not any(ch.isalpha() for ch in value):
+            print("Category must contain at least one letter, e.g. food or rent.")
+        else:
             return value
-        print("Category cannot be empty. Please try again.")
 
 
 def get_amount(prompt):
