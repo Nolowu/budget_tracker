@@ -1,8 +1,9 @@
 from model import Transaction
 from validation import get_amount, get_category
 from summary import totals_by_category, total, balance
+from storage import load_transactions, save_transactions
 
-transactions = []
+transactions = load_transactions()
 
 
 def format_money(cents):
@@ -28,6 +29,11 @@ def add_transaction(kind):
 
     transactions.append(Transaction(kind, category, amount, note))
     print(f"Saved: {kind} of {format_money(amount)} in '{category}'.")
+
+    try:
+        save_transactions(transactions)
+    except OSError:
+        print("Warning: could not write to the data file.")
 
 
 def view_transactions():
