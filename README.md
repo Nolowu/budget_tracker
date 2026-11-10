@@ -18,3 +18,6 @@ A terminal app for tracking student income and expenses.
 - validation.py: safe input functions
 - summary.py: totals and balance
 - storage.py: saving and loading the data file
+
+## Author
+- Ngozi: designed and built the app (setup, data model, validation, summaries, saving)
