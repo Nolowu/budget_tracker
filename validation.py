@@ -15,7 +15,23 @@ def get_category(prompt):
         else:
             return value
 
-        
+
+def get_transaction_number(prompt, max_number):
+    while True:
+        raw = input(prompt).strip()
+
+        if not (raw.isascii() and raw.isdigit()):
+            print("Please enter a whole number, for example 1.")
+            continue
+
+        number = int(raw)
+        if number < 1 or number > max_number:
+            print(f"Please enter a number from 1 to {max_number}.")
+            continue
+
+        return number
+
+
 def get_amount(prompt):
     while True:
         raw = input(prompt).strip()
