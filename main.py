@@ -1,5 +1,5 @@
 from model import Transaction
-from validation import get_amount, get_category
+from validation import get_amount, get_category, get_transaction_number
 from summary import totals_by_category, total, balance
 from storage import load_transactions, save_transactions
 
@@ -18,7 +18,15 @@ def show_menu():
     print("2. Add expense")
     print("3. View all transactions")
     print("4. View summary")
-    print("5. Quit")
+    print("5. Delete a transaction")
+    print("6. Quit")
+
+
+def save_data():
+    try:
+        save_transactions(transactions)
+    except OSError:
+        print("Warning: could not write to the data file.")
 
 
 def add_transaction(kind):
@@ -29,11 +37,7 @@ def add_transaction(kind):
 
     transactions.append(Transaction(kind, category, amount, note))
     print(f"Saved: {kind} of {format_money(amount)} in '{category}'.")
-
-    try:
-        save_transactions(transactions)
-    except OSError:
-        print("Warning: could not write to the data file.")
+    save_data()
 
 
 def view_transactions():
@@ -45,6 +49,27 @@ def view_transactions():
     for number, t in enumerate(transactions, start=1):
         sign = "+" if t.type == "income" else "-"
         print(f"{number}. {sign}{format_money(t.amount)}  {t.category}  {t.note}")
+
+
+def delete_transaction():
+    if not transactions:
+        print("\nNo transactions to delete.")
+        return
+
+    view_transactions()
+    number = get_transaction_number("Number to delete: ", len(transactions))
+
+    t = transactions[number - 1]
+    sign = "+" if t.type == "income" else "-"
+    print(f"You chose: {sign}{format_money(t.amount)}  {t.category}  {t.note}")
+
+    answer = input("Delete this transaction? (y/n): ").strip().lower()
+    if answer in ("y", "yes"):
+        transactions.pop(number - 1)
+        save_data()
+        print("Transaction deleted.")
+    else:
+        print("Cancelled. Nothing was deleted.")
 
 
 def print_totals(title, totals):
@@ -68,7 +93,7 @@ def view_summary():
 def main():
     while True:
         show_menu()
-        choice = input("Choose an option (1-5): ").strip()
+        choice = input("Choose an option (1-6): ").strip()
 
         if choice == "1":
             add_transaction("income")
@@ -79,10 +104,13 @@ def main():
         elif choice == "4":
             view_summary()
         elif choice == "5":
+            delete_transaction()
+        elif choice == "6":
             print("Goodbye!")
             break
         else:
-            print("Invalid choice. Please enter a number from 1 to 5.")
+            print("Invalid choice. Please enter a number from 1 to 6.")
+
 
 if __name__ == "__main__":
     try:
