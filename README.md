@@ -1,23 +1,29 @@
-# Terminal Student Budget Tracker
+﻿# Budget Management System
 
-A terminal app for tracking student income and expenses.
+A Python 3 terminal application for recording income and expenses, searching transactions, reviewing category reports, and tracking available balance.
+
+## Run
+
+From this directory, run `py main.py` (or `python main.py`). Data is stored automatically in `data/transactions.json`.
 
 ## Features
-- Add income and expenses by category
-- View all transactions
-- View totals per category and your balance
-- Data saved to a local file between runs
-- Input validation for amounts and categories
 
-## How to run
-    py main.py
+- Income and expense records with unique IDs, ISO dates, categories, and descriptions
+- Search by type, category, exact date, and amount range
+- Delete records after confirmation
+- Income and spending breakdowns, totals, and available balance
+- Automatic JSON directory creation, atomic saves, and graceful handling of missing, malformed, and legacy data
 
-## Project structure
-- main.py: menu and screens
-- model.py: the Transaction definition
-- validation.py: safe input functions
-- summary.py: totals and balance
-- storage.py: saving and loading the data file
+## Design
 
-## Author
-- Ngozi: designed and built the app (setup, data model, validation, summaries, saving)
+The application uses only Python's standard library. `Decimal` validates user-entered currency before converting it to integer minor units, avoiding floating-point arithmetic. Dataclasses represent transactions; UUIDs provide stable identifiers; JSON keeps data portable and human-readable. The CLI, validation, persistence, and report calculations live in separate modules to keep responsibilities clear.
+
+## Project files
+
+- `main.py`: menu and user interaction
+- `model.py`: transaction model
+- `validation.py`: amount, category, date, and selection validation
+- `storage.py`: JSON loading, migration, and atomic persistence
+- `summary.py`: totals and balances
+- `reports.py`: transaction filtering
+- `tests/`: unit tests
